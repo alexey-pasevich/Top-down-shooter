@@ -8,6 +8,7 @@ namespace TopDownShoot
     {
         [SerializeField] private CharacterController m_characterController;
         [SerializeField] private Transform m_cameraTarget;
+        [SerializeField] private AttackManager m_attackManager;
 
         [SerializeField] private float m_moveSpeed = 5f;
         [SerializeField] private float m_sprintSpeed = 10f;
@@ -16,6 +17,9 @@ namespace TopDownShoot
 
         private float m_rotationVelocity;
         private float m_targetRotation;
+
+        public AttackManager attackManager => m_attackManager;
+
 
         public void Move(Vector2 move, bool isSprint, float cameraY)
         {

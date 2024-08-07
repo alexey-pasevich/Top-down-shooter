@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 
 namespace TopDownShoot
@@ -24,6 +25,7 @@ namespace TopDownShoot
         private InputAction m_lookAction;
         private InputAction m_fireAction;
 
+        private bool m_canLook = true;
         private void Awake()
         {
             m_playerMap = m_inputActionAsset.FindActionMap("Player");
@@ -36,32 +38,57 @@ namespace TopDownShoot
         {
             m_playerMap.Enable();
 
-            m_fireAction.performed += OnFireInput;
+            m_fireAction.started += OnFireInputStarted;
+            m_fireAction.canceled += OnFireInputCanceled;
+
+            m_canLook = true;
         }
 
         private void OnDisable()
         {
             m_playerMap.Disable();
 
-            m_fireAction.performed -= OnFireInput;
+            m_fireAction.started -= OnFireInputStarted;
+            m_fireAction.canceled -= OnFireInputCanceled;
+
         }
 
-        private void OnFireInput(InputAction.CallbackContext context)
+        private void OnFireInputStarted(InputAction.CallbackContext context)
         {
-            Debug.Log("Try Fire");
+            m_character.attackManager.StartUse();
+        }
+        private void OnFireInputCanceled(InputAction.CallbackContext context)
+        {
+            m_character.attackManager.EndUse();
         }
 
         private void Update()
         {
+            if (m_character == null)
+            { 
+                enabled = false;
+                return;
+            }
+
             Vector2 move = m_moveAction.ReadValue<Vector2>();
             Move(move, false);
         }
 
         private void LateUpdate()
         {
-            Vector2 look = m_lookAction.ReadValue<Vector2>();
+            if (EventSystem.current.currentInputModule.input.GetMouseButtonDown(0))
+            {
+                m_canLook = !EventSystem.current.IsPointerOverGameObject();
+            }
+            else if (EventSystem.current.currentInputModule.input.GetMouseButtonUp(0))
+            {
+                m_canLook = true;
+            }
+
+            var look = m_canLook ? m_lookAction.ReadValue<Vector2>() : Vector2.zero;
             CameraRotation(look);
         }
+
 
         private void Move(Vector2 move, bool isSprint)
         {
