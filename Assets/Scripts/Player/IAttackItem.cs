@@ -8,5 +8,12 @@ namespace TopDownShoot
     {
         void StartUse();
         void EndUse();
+
+        void Reload();
+
+        void Show();
+        void Hide();
+
+        void DestroySelf();
     }
 }

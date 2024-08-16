@@ -10,30 +10,67 @@ namespace TopDownShoot
         private int m_currentIndex = -1;
 
 
-        private void Start()
+        public void Initialize(IReadOnlyList<WeaponSO> weapons)
+        {
+            m_currentIndex = -1;
+            foreach (var item in m_items)
+            { 
+                item.DestroySelf();
+            }
+            m_items.Clear();
+
+            foreach (var weaponData in weapons)
+            { 
+                var item = Instantiate(weaponData.prefab, transform);
+                item.Initialize(weaponData);
+                item.Hide();
+                m_items.Add(item);
+            }
+            m_currentIndex = m_items.Count > 0 ? 0 : -1;
+            currentItem?.Show();
+        }
+
+        public IAttackItem currentItem
+        {
+            get
+            { 
+                if (m_currentIndex >= 0) 
+                { 
+                    return m_items[m_currentIndex];
+                }
+                return null;
+            }
+        }
+
+        private void Awake()
         {
             GetComponentsInChildren(true, m_items);
 
+            for (int i = 1; i < m_items.Count; i++)
+            {
+                m_items[i].Hide();
+            }
             m_currentIndex = m_items.Count > 0 ? 0 : -1;
+            currentItem?.Show();
         }
 
         public void StartUse()
         {
-            if (m_currentIndex >= 0)
-            {
-                m_items[m_currentIndex].StartUse();
-            }
+            currentItem?.StartUse();
         }
         public void EndUse()
         {
-            if (m_currentIndex >= 0)
-            {
-                m_items[m_currentIndex].EndUse();
-            }
+            currentItem?.EndUse();
+        }
+
+        public void Reload()
+        { 
+            currentItem?.Reload();
         }
 
         public void Next()
         {
+            currentItem?.Hide();
             if (m_items.Count > 0)
             { 
                 m_currentIndex++;
@@ -41,6 +78,7 @@ namespace TopDownShoot
                 {
                     m_currentIndex = 0;
                 }
+                currentItem.Show();
             }
         }
     }

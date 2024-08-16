@@ -25,7 +25,7 @@ namespace TopDownShoot
             if (manager != null)
             {
                 manager.StartUse();
-                manager.EndUse();
+                //manager.EndUse();
             }
             return State.Success;
         }

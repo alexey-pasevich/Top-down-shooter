@@ -148,8 +148,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1128481774893495337}
   - component: {fileID: 2930437311970454856}
+  - component: {fileID: 9035165170701269862}
   m_Layer: 0
-  m_Name: Weapon
+  m_Name: GunWeapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -184,6 +185,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 793171fe6681e054a998f735b7c597fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_delay: 0.1
+  m_reloadTime: 1
+  m_bulletCount: 90
+  m_MaxCage: 30
+  m_cage: 0
+  m_autoFire: 1
+  m_autoReload: 1
+--- !u!114 &9035165170701269862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5822900801981451990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a5d04e7cf9d11241b876c5421f1f82e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   m_muzzle: {fileID: 1202207901374881439}
   m_prefab: {fileID: 833568660730515966, guid: bd658d79ce67aa8439c87b045944f122, type: 3}
-  m_delay: 0.1

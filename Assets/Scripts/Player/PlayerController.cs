@@ -16,6 +16,8 @@ namespace TopDownShoot
         [SerializeField] private float m_topClamp = 70f;
         [SerializeField] private float m_bottomClamp = -9f;
 
+        private CharMoveComponent m_charMoveComponent;
+
         private float m_cameraTargetYaw;
         private float m_cameraTargetPitch;
 
@@ -24,6 +26,8 @@ namespace TopDownShoot
         private InputAction m_moveAction;
         private InputAction m_lookAction;
         private InputAction m_fireAction;
+        private InputAction m_reloadAction;
+        private InputAction m_switchWeaponAction;
 
         private bool m_canLook = true;
         private void Awake()
@@ -32,6 +36,10 @@ namespace TopDownShoot
             m_moveAction = m_playerMap.FindAction("Move");
             m_lookAction = m_playerMap.FindAction("Look");
             m_fireAction = m_playerMap.FindAction("Fire");
+            m_reloadAction = m_playerMap.FindAction("Reload");
+            m_switchWeaponAction = m_playerMap.FindAction("SwitchWeapon");
+
+            m_charMoveComponent = m_character.GetComponent<CharMoveComponent>();
         }
 
         private void OnEnable()
@@ -40,6 +48,8 @@ namespace TopDownShoot
 
             m_fireAction.started += OnFireInputStarted;
             m_fireAction.canceled += OnFireInputCanceled;
+            m_reloadAction.performed += OnReloadPerformed;
+            m_switchWeaponAction.performed += OnSwitchWeaponPerformed;
 
             m_canLook = true;
         }
@@ -50,7 +60,19 @@ namespace TopDownShoot
 
             m_fireAction.started -= OnFireInputStarted;
             m_fireAction.canceled -= OnFireInputCanceled;
+            m_reloadAction.performed -= OnReloadPerformed;
+            m_switchWeaponAction.performed -= OnSwitchWeaponPerformed;
 
+        }
+
+        private void OnReloadPerformed(InputAction.CallbackContext context)
+        { 
+            m_character.attackManager.Reload();
+        }
+
+        private void OnSwitchWeaponPerformed(InputAction.CallbackContext context)
+        {
+            m_character.attackManager.Next();
         }
 
         private void OnFireInputStarted(InputAction.CallbackContext context)
@@ -92,7 +114,7 @@ namespace TopDownShoot
 
         private void Move(Vector2 move, bool isSprint)
         {
-            m_character.Move(move, isSprint, m_cameraTransform.eulerAngles.y);
+            m_charMoveComponent.Move(move, isSprint, m_cameraTransform.eulerAngles.y);
         }
 
 
@@ -112,7 +134,7 @@ namespace TopDownShoot
             m_cameraTargetYaw = ClampAngle(m_cameraTargetYaw, float.MinValue, float.MaxValue);
             m_cameraTargetPitch = ClampAngle(m_cameraTargetPitch, m_bottomClamp, m_topClamp);
 
-            m_character.Look(Quaternion.Euler(m_cameraTargetPitch, m_cameraTargetYaw, 0f));
+            m_charMoveComponent.Look(Quaternion.Euler(m_cameraTargetPitch, m_cameraTargetYaw, 0f));
 
         }
 
