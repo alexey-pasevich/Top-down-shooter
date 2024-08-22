@@ -7,5 +7,11 @@ namespace TopDownShoot
     public interface IMoveComponent 
     {
         void Init(float speed, float sprintSpeed);
+
+        Vector3 velocity { get; }
+
+        bool isGrounded { get; }
+
+        event System.Action onJump;
     }
 }

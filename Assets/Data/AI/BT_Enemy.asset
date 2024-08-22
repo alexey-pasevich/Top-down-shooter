@@ -33,13 +33,17 @@ MonoBehaviour:
   - rid: 7457889123175497740
   - rid: 7457889123175497742
   - rid: 3681334312437022720
+  - rid: 3681334699269292032
+  - rid: 3681334699269292033
+  - rid: 3681334699269292034
+  - rid: 3681334699269292035
   treeState: 0
   blackboard:
     target: {fileID: 0}
     moveToPosition: {x: 100, y: 0, z: 0}
     result: 0
-  viewPosition: {x: 159, y: 219, z: 0}
-  viewScale: {x: 0.57175326, y: 0.57175326, z: 1}
+  viewPosition: {x: 172, y: 271, z: 0}
+  viewScale: {x: 0.8695652, y: 0.8695652, z: 1}
   references:
     version: 2
     RefIds:
@@ -50,6 +54,64 @@ MonoBehaviour:
         started: 0
         guid: 8ec2b0da8b0d71749abde19815e05d8d
         position: {x: 997, y: 929}
+        blackboard:
+          target: {fileID: 0}
+          moveToPosition: {x: 0, y: 0, z: 0}
+          result: 0
+        description: 
+        drawGizmos: 0
+    - rid: 3681334699269292032
+      type: {class: isDeath, ns: TopDownShoot, asm: Assembly-CSharp}
+      data:
+        state: 0
+        started: 0
+        guid: 44a5f8c135d10aa43a5de09c2785703d
+        position: {x: 123.300026, y: 106.00004}
+        blackboard:
+          target: {fileID: 0}
+          moveToPosition: {x: 0, y: 0, z: 0}
+          result: 0
+        description: 
+        drawGizmos: 0
+        child:
+          rid: 3681334699269292033
+    - rid: 3681334699269292033
+      type: {class: Sequencer, ns: TheKiwiCoder, asm: Assembly-CSharp}
+      data:
+        state: 0
+        started: 0
+        guid: 9607be4a27dbb354bb6c89ceaac085c5
+        position: {x: 123.300026, y: 242.00003}
+        blackboard:
+          target: {fileID: 0}
+          moveToPosition: {x: 0, y: 0, z: 0}
+          result: 0
+        description: 
+        drawGizmos: 0
+        children:
+        - rid: 3681334699269292034
+        - rid: 3681334699269292035
+    - rid: 3681334699269292034
+      type: {class: Wait, ns: TheKiwiCoder, asm: Assembly-CSharp}
+      data:
+        state: 0
+        started: 0
+        guid: c40b509a84220f3419fe9684491f8540
+        position: {x: -26.699986, y: 371.00003}
+        blackboard:
+          target: {fileID: 0}
+          moveToPosition: {x: 0, y: 0, z: 0}
+          result: 0
+        description: 
+        drawGizmos: 0
+        duration: 5
+    - rid: 3681334699269292035
+      type: {class: DestroySelf, ns: TopDownShoot, asm: Assembly-CSharp}
+      data:
+        state: 0
+        started: 0
+        guid: eedf7eca747f67b48beb4a58804da9bb
+        position: {x: 291.3, y: 371.00003}
         blackboard:
           target: {fileID: 0}
           moveToPosition: {x: 0, y: 0, z: 0}
@@ -144,6 +206,7 @@ MonoBehaviour:
         description: 
         drawGizmos: 0
         children:
+        - rid: 3681334699269292032
         - rid: 7457889123175497733
         - rid: 7457889123175497731
     - rid: 7457889123175497731

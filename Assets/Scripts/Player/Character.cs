@@ -12,6 +12,7 @@ namespace TopDownShoot
 
         public AttackManager attackManager => m_attackManager;
 
+        public HealthComponent healthComp => m_healthComponent;
         public IMoveComponent moveComponent => m_moveComponent;
 
         public void Initialized(CharacterSO data)

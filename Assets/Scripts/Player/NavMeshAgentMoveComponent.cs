@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,9 +10,14 @@ namespace TopDownShoot
     {
         [SerializeField] private NavMeshAgent m_agent;
 
+        public Vector3 velocity => m_agent.velocity;
+        public bool isGrounded => true;
+        public event Action onJump;
         public void Init(float speed, float sprintSpeed)
         { 
             m_agent.speed = speed;
         }
+
+       
     }
 }

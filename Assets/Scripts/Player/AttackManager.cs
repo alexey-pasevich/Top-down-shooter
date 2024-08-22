@@ -9,6 +9,7 @@ namespace TopDownShoot
         private List<IAttackItem> m_items = new();
         private int m_currentIndex = -1;
 
+        public event System.Action onUse;
 
         public void Initialize(IReadOnlyList<WeaponSO> weapons)
         {
@@ -25,6 +26,7 @@ namespace TopDownShoot
                 item.Initialize(weaponData);
                 item.Hide();
                 m_items.Add(item);
+                item.onUse += () => onUse?.Invoke();
             }
             m_currentIndex = m_items.Count > 0 ? 0 : -1;
             currentItem?.Show();

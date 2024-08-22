@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,9 +13,21 @@ namespace TopDownShoot
         [SerializeField] private float m_sprintSpeed = 10f;
         [SerializeField] private float m_rotationSmoothTime = 0.12f;
         [SerializeField] private float m_speedChangeRate = 10f;
+        [SerializeField] private float m_jumpHeight = 1.2f;
+
+        private const float TerminalVelocity = 53f;
+        private const float VerticalVelocityMin = -2f;
 
         private float m_rotationVelocity;
         private float m_targetRotation;
+        private float m_verticalVelocity;
+        private float gravity => Physics.gravity.y;
+
+        public Vector3 velocity => m_characterController.velocity;
+
+        public bool isGrounded => m_characterController.isGrounded;
+
+        public event Action onJump;
 
         public void Init(float speed, float sprintSpeed)
         { 
@@ -65,9 +78,21 @@ namespace TopDownShoot
                 targetTr.rotation = Quaternion.Euler(0f, rotation, 0f);
             }
 
+            if (m_characterController.isGrounded)
+            {
+                if (m_verticalVelocity < 0f)
+                {
+                    m_verticalVelocity = VerticalVelocityMin;
+                }
+            }
+
+            if (m_verticalVelocity < TerminalVelocity)
+            {
+                m_verticalVelocity += gravity * Time.deltaTime;
+            }
 
             Vector3 targetDirection = Quaternion.Euler(0f, m_targetRotation, 0f) * Vector3.forward;
-            Vector3 vertical = new Vector3(0f, Physics.gravity.y * Time.deltaTime, 0f);
+            Vector3 vertical = new Vector3(0f, m_verticalVelocity * Time.deltaTime, 0f);
             Vector3 horizontal = targetDirection.normalized * (speed * Time.deltaTime);
             m_characterController.Move(horizontal + vertical);
         }
@@ -75,6 +100,15 @@ namespace TopDownShoot
         public void Look(Quaternion rotation)
         {
             m_cameraTarget.rotation = rotation;
+        }
+
+        public void Jump()
+        {
+            if (m_characterController.isGrounded)
+            {
+                m_verticalVelocity = Mathf.Sqrt(m_jumpHeight * VerticalVelocityMin * gravity);
+                onJump?.Invoke();
+            }
         }
     }
 }

@@ -19,7 +19,13 @@ namespace TopDownShoot
         private void OnEnable()
         {
             m_healthComponent.onTakeDamage += OnTakeDamage;
+            m_healthComponent.onDie += onDie;
             Refresh();
+        }
+
+        private void onDie()
+        { 
+        m_container.SetActive(false);
         }
 
         private void OnTakeDamage(float damage)
@@ -34,6 +40,8 @@ namespace TopDownShoot
         private void OnDisable()
         {
             m_healthComponent.onTakeDamage -= OnTakeDamage;
+            m_healthComponent.onDie -= onDie;
+
         }
 
         private void LateUpdate()

@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
+using System;
 
 namespace TopDownShoot
 {
@@ -18,6 +19,10 @@ namespace TopDownShoot
 
         private CharMoveComponent m_charMoveComponent;
 
+        public event System.Action onUseItem;
+
+        public Character character => m_character;
+
         private float m_cameraTargetYaw;
         private float m_cameraTargetPitch;
 
@@ -28,6 +33,9 @@ namespace TopDownShoot
         private InputAction m_fireAction;
         private InputAction m_reloadAction;
         private InputAction m_switchWeaponAction;
+        private InputAction m_jumpAction;
+        private InputAction m_sprintAction;
+        private InputAction m_useAction;
 
         private bool m_canLook = true;
         private void Awake()
@@ -38,6 +46,9 @@ namespace TopDownShoot
             m_fireAction = m_playerMap.FindAction("Fire");
             m_reloadAction = m_playerMap.FindAction("Reload");
             m_switchWeaponAction = m_playerMap.FindAction("SwitchWeapon");
+            m_jumpAction = m_playerMap.FindAction("Jump");
+            m_sprintAction = m_playerMap.FindAction("Sprint");
+            m_useAction = m_playerMap.FindAction("Use");
 
             m_charMoveComponent = m_character.GetComponent<CharMoveComponent>();
         }
@@ -50,8 +61,15 @@ namespace TopDownShoot
             m_fireAction.canceled += OnFireInputCanceled;
             m_reloadAction.performed += OnReloadPerformed;
             m_switchWeaponAction.performed += OnSwitchWeaponPerformed;
+            m_jumpAction.performed += OnJumpPerformed;
+            m_useAction.performed += OnUsePerfmormed;
 
             m_canLook = true;
+        }
+
+        private void OnUsePerfmormed(InputAction.CallbackContext context)
+        {
+            onUseItem?.Invoke();
         }
 
         private void OnDisable()
@@ -62,7 +80,13 @@ namespace TopDownShoot
             m_fireAction.canceled -= OnFireInputCanceled;
             m_reloadAction.performed -= OnReloadPerformed;
             m_switchWeaponAction.performed -= OnSwitchWeaponPerformed;
+            m_jumpAction.performed -= OnJumpPerformed;
+            m_useAction.performed -= OnUsePerfmormed;
+        }
 
+        private void OnJumpPerformed(InputAction.CallbackContext obj)
+        {
+            m_charMoveComponent.Jump();
         }
 
         private void OnReloadPerformed(InputAction.CallbackContext context)
@@ -84,6 +108,11 @@ namespace TopDownShoot
             m_character.attackManager.EndUse();
         }
 
+        public void SetActiveChar(bool active)
+        { 
+            m_character.gameObject.SetActive(active);
+        }
+
         private void Update()
         {
             if (m_character == null)
@@ -93,7 +122,7 @@ namespace TopDownShoot
             }
 
             Vector2 move = m_moveAction.ReadValue<Vector2>();
-            Move(move, false);
+            Move(move, m_sprintAction.IsPressed());
         }
 
         private void LateUpdate()
