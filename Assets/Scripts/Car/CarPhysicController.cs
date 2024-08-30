@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace ShadowChimera
+namespace TopDownShoot
 {
     public class CarPhysicController : MonoBehaviour
     {
@@ -46,6 +46,7 @@ namespace ShadowChimera
         }
 
         public Transform exitPoint;
+        public Transform driverPoint;
 
         public Wheel frontLeftWheel;
         public Wheel frontRightWheel;
@@ -78,6 +79,11 @@ namespace ShadowChimera
             frontRightWheel.Setup();
             rearLeftWheel.Setup();
             rearRightWheel.Setup();
+
+            if (driverPoint == null)
+            {
+                driverPoint = transform;
+            }
         }
 
         private void Move()
@@ -147,6 +153,13 @@ namespace ShadowChimera
                 return;
             }
             (acceleration, brake) = (brake, acceleration);
+        }
+
+        public void ResetInput()
+        {
+            m_gear = 0;
+
+            SetInput(0, 0, 0);
         }
 
         void FixedUpdate()

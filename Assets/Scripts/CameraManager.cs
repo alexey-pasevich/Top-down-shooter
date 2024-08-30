@@ -10,6 +10,7 @@ namespace TopDownShoot
         public const string Player = "PlayerController";
         public const string Dead = "DeadCamera";
         public const string Pause = "PauseCamera";
+        public const string Car = "Car";
     }
 
     public class CameraManager : MonoBehaviour

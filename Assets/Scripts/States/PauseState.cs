@@ -11,17 +11,17 @@ namespace TopDownShoot
 
         public GameplayState gameplayState;
 
-        protected override void OnEnable()
+        private void OnEnable()
         {
-            base.OnEnable();
+  
             Time.timeScale = 0f;
 
             m_cameraManager.Activate(CameraNames.Pause);
         }
 
-        protected override void OnDisable()
+        private void OnDisable()
         {
-            base.OnDisable();
+
             Time.timeScale = 1;
         }
 
@@ -39,6 +39,11 @@ namespace TopDownShoot
         public void GoToMainMenu()
         {
             SceneManager.LoadScene("MainMenuScene");
+        }
+
+        public void GoToSettings()
+        {
+            States.instance.Push<SettingsState>();
         }
     }
 }

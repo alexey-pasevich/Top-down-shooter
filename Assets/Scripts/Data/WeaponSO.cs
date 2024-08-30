@@ -5,7 +5,7 @@ using UnityEngine;
 namespace TopDownShoot
 {
     [CreateAssetMenu(fileName = "WeaponSO", menuName = "TopDownShoot/WeaponSO")]
-    public class WeaponSO : ScriptableObject
+    public class WeaponSO : ItemBase
     {
         [SerializeField] private WeaponAttackItem m_prefab;
         [SerializeField] private float m_delay = 0.1f;

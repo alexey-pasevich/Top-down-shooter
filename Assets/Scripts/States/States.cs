@@ -21,47 +21,106 @@ namespace TopDownShoot
 
             GetComponentsInChildren(true, m_states);
         }
+
+        private void OnDestroy()
+        {
+            ClearStack();
+            if (m_currentState)
+            {
+                m_currentState.Deactivate();
+                m_currentState.Exit();
+            }
+        }
+
         private void Start()
         {
-            m_states.ForEach(x => x.gameObject.SetActive(false));
+            m_states.ForEach(x =>
+            {
+                x.gameObject.SetActive(false);
+                x.SetActivateView(false);
+            });
 
             m_currentState = m_startState;
             m_currentState.Enter();
+            m_currentState.Activate();
         }
 
-        public void Swap<T>() where T : GameState
+        public T Swap<T>() where T : GameState
         {
-            m_stack.Clear();
+            if (m_currentState)
+            {
+                m_currentState.Deactivate();
+                m_currentState.Exit();
+            }
 
+            ClearStack();
+
+            return Activate<T>();
+        }
+
+        private void ClearStack()
+        {
+            foreach (var state in m_stack)
+            {
+                if (state)
+                {
+                    state.Exit();
+                }
+            }
+            m_stack.Clear();
+        }
+
+        private T Activate<T>() where T : GameState
+        {
             var nextState = m_states.Find(x => x is T);
             if (nextState)
             {
-                if (m_currentState)
-                { 
-                    m_currentState.Exit();
+                if (m_stack.Contains(nextState))
+                {
+                    while (m_stack.Count > 0)
+                    {
+                        var state = m_stack.Pop();
+                        if (nextState == state)
+                        {
+                            break;
+                        }
+                        state.Exit();
+                    }
                 }
+                else
+                {
+                    nextState.Enter();
+                }
+                nextState.Activate();
                 m_currentState = nextState;
-                m_currentState.Enter();
+
+                return (T)nextState;
             }
+
+            return null;
         }
-        public void Push<T>() where T : GameState
+
+        public T Push<T>() where T : GameState
         {
             if (m_currentState)
-            { 
+
+
+
+
+
+
+            {
+                m_currentState.Deactivate();
                 m_stack.Push(m_currentState);
             }
-            var prevState = m_currentState;
 
-            Swap<T>();
-
-            if(prevState)
-            {
-                m_stack.Push(prevState);
-            }
+            return Activate<T>();
         }
 
         public void Pop()
         {
+
+
             if (m_stack.Count == 0)
             {
                 return;
@@ -69,11 +128,13 @@ namespace TopDownShoot
 
             if (m_currentState)
             {
+                m_currentState.Deactivate();
                 m_currentState.Exit();
             }
 
             m_currentState = m_stack.Pop();
-            m_currentState.Enter();
+            m_currentState.Activate();
         }
     }
+
 }

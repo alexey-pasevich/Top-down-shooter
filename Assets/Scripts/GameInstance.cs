@@ -9,6 +9,8 @@ namespace TopDownShoot
     {
         public static GameInstance instance;
 
+        public DialogSO dialogs;
+
         public Player player { private set; get; } = new Player();
         [SerializeField] private AudioMixer m_audioMixer;
 

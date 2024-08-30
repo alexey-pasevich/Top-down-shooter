@@ -1,0 +1,17 @@
+{
+    "dialogs": [
+        {
+            "id": "test",
+            "dialogs": [
+                {
+                    "title": "Cop",
+                    "text": "Hi"
+                },
+                {
+                    "title": "Self",
+                    "text": "Good Morning!"
+                }
+            ]
+        }
+    ]
+}

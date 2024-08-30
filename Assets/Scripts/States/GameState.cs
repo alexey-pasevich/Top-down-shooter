@@ -8,34 +8,46 @@ namespace TopDownShoot
     {
         public List<GameObject> views;
 
-        public virtual void Enter()
+        protected virtual void OnEnter()
+        {
+        }
+
+        protected virtual void OnExit()
+        {
+        }
+
+        public void Activate()
         {
             gameObject.SetActive(true);
+            SetActivateView(true);
+        }
+
+        public void Deactivate()
+        {
+            SetActivateView(false);
+            gameObject.SetActive(false);
+        }
+
+        public void Enter()
+        {
+            OnEnter();
         }
 
         public void Exit()
         {
-            gameObject.SetActive(false);
+            OnExit();
         }
 
-        protected virtual void OnEnable()
+        public void SetActivateView(bool state)
         {
-            foreach (var items in views)
+            foreach (var item in views)
             {
-                items.SetActive(true);
-            }
-        }
-
-
-        protected virtual void OnDisable()
-        {
-            foreach (var items in views)
-            {
-                if (items)
+                if (item)
                 {
-                    items.SetActive(false);
+                    item.SetActive(state);
                 }
             }
         }
+
     }
 }

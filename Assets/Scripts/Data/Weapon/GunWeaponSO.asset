@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac9dba4b1b4c11746998131ee46969a6, type: 3}
   m_Name: GunWeaponSO
   m_EditorClassIdentifier: 
+  id: gun
+  displayName: Gun
+  icon: {fileID: 0}
   m_prefab: {fileID: 2930437311970454856, guid: 0be21ab422565374bb91823ae495265c, type: 3}
   m_delay: 0.1
   m_reloadTime: 1

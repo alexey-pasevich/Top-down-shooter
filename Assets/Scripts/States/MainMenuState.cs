@@ -26,5 +26,10 @@ namespace TopDownShoot
         { 
             States.instance.Push<SettingsState>();
         }
+
+        public void GoToShop()
+        {
+            States.instance.Push<ShopState>();
+        }
     }
 }

@@ -1,4 +1,3 @@
-using ShadowChimera;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,71 +12,51 @@ namespace TopDownShoot
 
         [SerializeField] PlayerController m_playerController;
         [SerializeField] CarInputController m_carController;
-        [SerializeField] CarPhysicController m_tempCar;
+        [SerializeField] Character m_character;
 
-        private bool m_inCar = false;
+        [SerializeField] GameObject m_playerInputUI;
+        [SerializeField] GameObject m_carInputUI;
 
-        override protected void OnEnable()
+        private GameplayFSM m_gameplayFsm;
+
+        private void OnEnable()
         {
-            base.OnEnable();
-
-            m_cameraManager.Activate(CameraNames.Player);
-            m_carController.gameObject.SetActive(m_inCar);
-            m_playerController.gameObject.SetActive(!m_inCar);
-
-            m_playerController.onUseItem += PlayerController_OnUseItem;
-            m_carController.OnExitCar += ExitCar;
+            m_gameplayFsm.Activate();
         }
 
-        private void PlayerController_OnUseItem()
+        private void Awake()
         {
-            EnterCar(m_tempCar);
-        }
-
-        protected override void OnDisable()
-        {
-            base.OnDisable();
-
-            if (m_carController) 
-            { 
-                m_carController?.gameObject.SetActive(false);
-                m_carController.OnExitCar -= ExitCar;
-            }
-
-            if (m_playerController)
+            var context = new GameplayContext()
             {
-                m_playerController?.gameObject.SetActive(false);
-                m_playerController.onUseItem -= PlayerController_OnUseItem;
+                carController = m_carController,
+                playerController = m_playerController,
+                character = m_character,
+                cameraManager = m_cameraManager,
+                playerInputUI = m_playerInputUI,
+                carInputUI = m_carInputUI
+            };
+            m_gameplayFsm = new GameplayFSM(context);
+
+            if (TryGetComponent<TasksController>(out var tasksController))
+            {
+                tasksController.Init(m_character, GameInstance.instance.player);
             }
+        }
+
+        private void OnDisable()
+        {
+            
+            m_gameplayFsm.Deactivate();
+        }
+
+        private void Update()
+        {
+            m_gameplayFsm.Update();         
         }
 
         public void GoToPause()
         {
             States.instance.Push<PauseState>();
-        }
-
-        private void EnterCar(CarPhysicController car)
-        { 
-            m_carController.Init(car);
-
-            m_playerController.character.transform.SetParent(car.transform, true);
-
-            m_inCar = true;
-
-            m_carController.gameObject.SetActive(true);
-            m_playerController.gameObject.SetActive(false);
-            m_playerController.SetActiveChar(false);
-        }
-
-        private void ExitCar()
-        {
-            m_inCar = false;
-
-            m_carController.gameObject.SetActive(false);
-            m_playerController.gameObject.SetActive(true);
-            m_playerController.SetActiveChar(true);
-
-            m_playerController.character.transform.SetParent(null, true);
         }
     }
 

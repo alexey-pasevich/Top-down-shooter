@@ -14,6 +14,7 @@ namespace TopDownShoot
         public event System.Action<int> onQualityChanged;
         public event System.Action<int> onMusicVolumeChanged;
         public event System.Action<int> onFxVolumeChanged;
+        public event System.Action onTryBack;
 
         private void Awake()
         {
@@ -40,5 +41,11 @@ namespace TopDownShoot
         {
             m_quality.value = index;
         }
+
+        public void TryBack()
+        {
+            onTryBack?.Invoke();
+        }
+
     }
 }
