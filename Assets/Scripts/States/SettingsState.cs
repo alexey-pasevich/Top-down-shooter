@@ -13,9 +13,7 @@ namespace TopDownShoot
 
         private void OnEnable()
         {
-        
-            var settings = GameInstance.instance.player.settings;
-
+            //var settings = GameInstance.instance.player.settings;
             m_settingsPanel.SetMusic(settings.musicVolume);
             m_settingsPanel.SetFx(settings.fxVolume);
             m_settingsPanel.SetQuality(settings.quality);
@@ -26,7 +24,7 @@ namespace TopDownShoot
             m_settingsPanel.onTryBack += OnTryBack;
         }
 
-        public void OnTryBack()
+        private void OnTryBack()
         {
 
             States.instance.Pop();
@@ -49,8 +47,6 @@ namespace TopDownShoot
 
         private void OnDisable()
         {
-          
-
             m_settingsPanel.onQualityChanged -= onQualityChanged;
             m_settingsPanel.onMusicVolumeChanged -= onMusicVolumeChanged;
             m_settingsPanel.onFxVolumeChanged -= onFxVolumeChanged;

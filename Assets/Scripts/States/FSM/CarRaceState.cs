@@ -46,7 +46,20 @@ namespace TopDownShoot
             carController.gameObject.SetActive(true);
             carController.OnExitCar += OnExitCar;
 
+            OnColliderFalse();
             SetPause(false);
+        }
+
+        public void OnColliderTrue()
+        { 
+            var characterT = context.character;
+            characterT.GetComponent<Collider>().enabled = true;
+        }
+
+        public void OnColliderFalse()
+        {
+            var characterT = context.character;
+            characterT.GetComponent<Collider>().enabled = false;
         }
 
         public override void Exit()
@@ -77,6 +90,7 @@ namespace TopDownShoot
             carController.gameObject.SetActive(false);
             carController.OnExitCar -= OnExitCar;
 
+            OnColliderTrue();
             context.car = null;
         }
 

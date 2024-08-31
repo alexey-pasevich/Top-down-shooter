@@ -15,13 +15,13 @@ MonoBehaviour:
   dialogs:
   - id: task_1
     dialogs:
-    - title: Cop
-      text: Hi
+    - title: PoliceMan
+      text: Hello, my partner has been taken hostage, help me!!!
     - title: Self
-      text: Good Morning!
+      text: Good Morning! I'll help you
   - id: task_2
     dialogs:
-    - title: Friend
-      text: Hi
+    - title: Hostage
+      text: Thanks for saving me!!
     - title: Self
-      text: Good Morning!
+      text: You're welcome, always happy to help!
